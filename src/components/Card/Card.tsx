@@ -11,10 +11,11 @@ interface CardProps {
     prodPrice?: string,
     product?: any,
     onCart?: (productData: any) => void,
-    forLoading?: boolean
+    forLoading?: boolean,
+    prodWeight?: any
 }
 
-const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false}: CardProps) => {
+const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false, prodWeight}: CardProps) => {
     const [counter, setCounter] = useState(1);
 
     const handleAddToCart = () => {
@@ -38,9 +39,12 @@ const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false
             />
             <div className="card-interactive">
                 {forLoading ? null
-                 : (
-                    prodName
-                )}
+                    : (
+                        <span>
+                            {prodName}
+                            <span style={{opacity: 0.5 , fontSize: 12 , marginLeft: 10}}> {prodWeight}</span>
+                        </span>
+                    )}
                 {!forLoading && (
                     <ProductCounter
                         count={counter}
@@ -51,9 +55,9 @@ const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false
             </div>
             <div className="card-info">
                 {forLoading ? null
-                 : (
-                    `$ ${prodPrice}`
-                )}
+                    : (
+                        `$ ${prodPrice}`
+                    )}
                 {forLoading ? null : <Button
                     text='Add to cart'
                     logo={cartLogo}

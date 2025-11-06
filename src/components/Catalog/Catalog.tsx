@@ -29,7 +29,8 @@ const Catalog = ({products, loading, error, onCart}: CatalogProps) => {
                         <Card
                             prodImg={product.image}
                             key={product.id}
-                            prodName={product.name}
+                            prodName={(product.name).split('-')[0]}
+                            prodWeight={(product.name).split('-')[1]}
                             prodPrice={product.price}
                             product={product}
                             onCart={onCart}
