@@ -18,7 +18,7 @@ const Catalog = ({products, loading, error, onCart}: CatalogProps) => {
             <h2>Catalog</h2>
             <div className="catalog-list">
                 {loading ? (
-                    Array.from({ length: 8 }).map((_, index) => (
+                    Array.from({ length: 30 }).map((_, index) => (
                         <Card
                             key={index}
                             forLoading={true}
