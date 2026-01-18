@@ -1,28 +1,23 @@
 import cartEmpty from '../../assets/cartEmpty.png';
 import ProductCounter from "../ProductCounter/ProductCounter.tsx";
+import { useAppSelector} from "../../hooks/redux.ts";
+import type {RootState} from "../../store";
 
-interface CartProps {
-    cards?: any[],
-    forOpen?: boolean,
-    onUpdateQuantity?: (productId: number, newQuantity: number) => void
-}
 
-const Cart = ({cards, forOpen, onUpdateQuantity}: CartProps) => {
 
-    const handleCountChange = (itemId: number, newQuantity: number) => {
-        if (onUpdateQuantity) {
-            if (newQuantity === 0) {
 
-                onUpdateQuantity(itemId,0);
-            } else {
-                onUpdateQuantity(itemId, newQuantity);
-            }
-        }
-    };
+const Cart = () => {
+
+
+
+
+    const cards = useAppSelector(state => state.shops.cart)
 
     const totalAmount = cards?.reduce((acc, item) => {
-        return acc + (item.quantity * parseFloat(item.price));
+        return acc + (item.quantity * item.price);
     }, 0) || 0;
+
+    const forOpen = useAppSelector((state: RootState) => state.shops.openCart);
 
     return (
         <>
@@ -42,15 +37,15 @@ const Cart = ({cards, forOpen, onUpdateQuantity}: CartProps) => {
                                             <div className="cart-item-price">${item.price}</div>
                                         </div>
                                         <ProductCounter
-                                            count={item.quantity}
-                                            onCountChange={(newCount) => handleCountChange(item.id, newCount)}
+                                          productId={item.id}
+                                          itsCart={true}
                                         />
                                     </div>
                                 ))}
                             </div>
                             <div className="cart-total">
                                 <h3>Total:</h3>
-                                <div>${totalAmount.toFixed(2)}</div>
+                                <div>${totalAmount}</div>
                             </div>
                         </>
                     ) : (

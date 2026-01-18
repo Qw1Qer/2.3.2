@@ -1,34 +1,24 @@
 import cartLogo from '../../assets/cartGreen.svg'
-import {useState} from "react";
 import Button from "../Button/Button.tsx";
 import ProductCounter from "../ProductCounter/ProductCounter.tsx";
 import loader from '../../assets/loader.svg'
 
 
+
+
 interface CardProps {
     prodImg?: string,
     prodName?: string,
-    prodPrice?: string,
+    prodPrice?: number,
     product?: any,
-    onCart?: (productData: any) => void,
+    onCart?: () => void,
     forLoading?: boolean,
     prodWeight?: any
+    prodId: number
 }
 
-const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false, prodWeight}: CardProps) => {
-    const [counter, setCounter] = useState(1);
+const Card = ({prodImg,prodId, prodName, prodPrice, onCart, forLoading = false, prodWeight}: CardProps) => {
 
-    const handleAddToCart = () => {
-        if (onCart && product && !forLoading) {
-            onCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: counter
-            });
-        }
-    }
 
     return (
         <div className="catalog-card">
@@ -47,9 +37,7 @@ const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false
                     )}
                 {!forLoading && (
                     <ProductCounter
-                        count={counter}
-                        onCountChange={setCounter}
-                        itCard={true}
+                        productId={prodId}
                     />
                 )}
             </div>
@@ -63,7 +51,7 @@ const Card = ({prodImg, prodName, prodPrice, product, onCart, forLoading = false
                     logo={cartLogo}
                     unhoverClass='card-button__disable'
                     hoverClass='card-button__active'
-                    onClick={handleAddToCart}
+                    onClick={onCart}
                 />
                 }
             </div>

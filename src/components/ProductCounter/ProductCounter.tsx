@@ -1,43 +1,46 @@
 import minusDisable from "../../assets/minusDis.svg";
 import minusActive from "../../assets/minusActive.svg";
 import plusActive from "../../assets/plus1op.svg";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
+import {decrementQuantity, deleteCart, incrementQuantity} from "../../store/slices/shopSlice.ts";
+
 
 interface ProductCounterProps {
-    count?: number,
-    onCountChange?: (newCount: number) => void,
-    itCard?: boolean
+    productId: number;
+    itsCart?: boolean;
 }
 
-const ProductCounter = ({count = 1, onCountChange, itCard}: ProductCounterProps) => {
-    const addItem = () => {
-        if (onCountChange) {
-            onCountChange(count + 1);
+const ProductCounter = ({productId, itsCart}: ProductCounterProps) => {
+
+    const dispatch = useAppDispatch();
+
+    const handleIncrement = () => {
+        dispatch(incrementQuantity(productId));
+    }
+    const handleDecrement = () => {
+        if (itsCart && count <= 1) {
+            dispatch(deleteCart(productId));
+        }else {
+            dispatch(decrementQuantity(productId));
         }
     }
 
-    const removeItem = () => {
-        if (onCountChange) {
-            if (itCard) {
-                if (count > 1) {
-                    onCountChange(count - 1);
-                }
-            } else {
-                onCountChange(count - 1);
-            }
-        }
-    }
+
+    const count = useAppSelector(state =>
+        state.shops.products.find(product => product.id === productId)?.quantity || 1
+    );
 
     return (
         <div className="card-counter">
             <button
                 className='card-minus__active'
-                onClick={removeItem}
-                disabled={itCard ? (count <= 1) : false}
+                onClick={handleDecrement}
+                disabled={count === 1 && !itsCart}
             >
-                <img src={itCard ? (count <= 1 ? minusDisable : minusActive) : minusActive } alt='remove'/>
+                <img src={count === 1 && !itsCart ? (count <= 1 ? minusDisable : minusActive) : minusActive } alt='remove'/>
             </button>
             {count}
-            <button className='card-plus__active' onClick={addItem}>
+            <button className='card-plus__active' onClick={handleIncrement}>
                 <img src={plusActive} alt='add'/>
             </button>
         </div>

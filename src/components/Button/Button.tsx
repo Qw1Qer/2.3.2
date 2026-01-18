@@ -1,5 +1,6 @@
-import {useEffect, useRef, useState} from "react";
 import useHover from "../../hooks/useHover.tsx";
+import {useRef} from "react";
+
 
 interface ButtonProps {
     text?: string,
@@ -9,29 +10,16 @@ interface ButtonProps {
     forAlt?: string,
     cartCount?: number,
     onClick?: () => void,
-    cards?: any[] | undefined
 }
 
-const Button = ({text, logo, unhoverClass,hoverClass, forAlt, cartCount, onClick, cards}: ButtonProps) => {
-
-    const [count, setCount] = useState(0);
+const Button = ({text, logo ,hoverClass, forAlt, cartCount, onClick,unhoverClass }: ButtonProps) => {
     const ref = useRef<HTMLButtonElement>(null);
-    const isHoverd = useHover(ref)
-
-    useEffect(() => {
-        if(cards && cards.length > 0) {
-            setCount(cards.length);
-        }
-        if (cards?.length === 0) {
-            setCount(0);
-        }
-    }, [cards]);
+    const isHover = useHover(ref)
 
     return (
         <div>
-            <button ref={ref} onClick={onClick} className={isHoverd ? hoverClass : unhoverClass  } >
-                {cartCount ? cartCount : ""}
-                {count ? <div className='cart-count'>{count}</div> : null}{text}
+            <button ref={ref}  onClick={onClick} className={isHover ? hoverClass : unhoverClass } >
+                {cartCount ? <div className='cart-count'>{cartCount}</div> : null}{text}
                 <img src={logo} alt={forAlt}/>
             </button>
         </div>

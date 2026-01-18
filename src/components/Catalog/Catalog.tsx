@@ -1,18 +1,21 @@
 import Card from '../Card/Card.tsx';
+import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
+import {addCart} from "../../store/slices/shopSlice.ts";
 
 
-interface CatalogProps {
-    products?: any[],
-    loading?: boolean,
-    error?: string | null,
-    onCart?: (productData: any) => void
-}
+const Catalog = () => {
 
-const Catalog = ({products, loading, error, onCart}: CatalogProps) => {
+    const error = useAppSelector(state => state.shops.error);
+    const loading = useAppSelector(state => state.shops.loading);
     if (error) {
         throw error;
     }
+    const dispatch = useAppDispatch();
+    const handleAddToCart = (productID: any) => {
+        dispatch(addCart(productID));
+    }
 
+    const products = useAppSelector(state => state.shops.products);
     return (
         <div className="app-catalog">
             <h2>Catalog</h2>
@@ -21,8 +24,7 @@ const Catalog = ({products, loading, error, onCart}: CatalogProps) => {
                     Array.from({ length: 30 }).map((_, index) => (
                         <Card
                             key={index}
-                            forLoading={true}
-                        />
+                            forLoading={true} prodId={0}                        />
                     ))
                 ) : (
                     products?.map((product) => (
@@ -32,9 +34,9 @@ const Catalog = ({products, loading, error, onCart}: CatalogProps) => {
                             prodName={(product.name).split('-')[0]}
                             prodWeight={(product.name).split('-')[1]}
                             prodPrice={product.price}
-                            product={product}
-                            onCart={onCart}
+                            onCart={()=> handleAddToCart(product.id)}
                             forLoading={false}
+                            prodId={product.id}
                         />
                     ))
                 )}
