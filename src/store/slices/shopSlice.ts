@@ -116,4 +116,4 @@ export const {
     deleteCart
 } = shopSlice.actions;
 
-export default shopSlice.reducer;
+export default shopSlice.reducer
