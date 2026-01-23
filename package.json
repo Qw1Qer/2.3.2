@@ -2,14 +2,14 @@
   "name": "2.3.2",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Qw1Qer.github.io/2.3.2",
+  "homepage": "https://qw1qer.github.io/2.3.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run"
